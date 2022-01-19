@@ -2,18 +2,11 @@ using DevTrust_Test_Task.DataAccess;
 using DevTrust_Test_Task.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Autofac;
 
 namespace DevTrust_Test_Task
 {
@@ -26,11 +19,18 @@ namespace DevTrust_Test_Task
 
         public IConfiguration Configuration { get; }
 
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterType<PersonRepository>().As<IPersonRepository>().InstancePerDependency();
+            builder.RegisterType<PersonRepository>().As<IPersonRepository>()
+                .InstancePerLifetimeScope();
+            //builder.RegisterModule(new RegisterModule());
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IAddressRepository, AddressRepository>();
-            services.AddScoped<IPersonRepository, PersonRepository>();
+            //services.AddScoped<IPersonRepository, PersonRepository>();
 
             services.AddDbContext<ApplicationDbContext>();
 

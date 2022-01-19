@@ -1,15 +1,9 @@
 ﻿using DevTrust_Test_Task.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Ninject;
 using DevTrust_Test_Task.Extensions;
 using DevTrust_Test_Task.Entities;
-using System.Text.Json;
 using DevTrust_Test_Task.Converters;
-using System.Text.Json.Serialization;
 
 namespace DevTrust_Test_Task.Controllers
 {
@@ -22,16 +16,11 @@ namespace DevTrust_Test_Task.Controllers
         public PersonController(IPersonRepository personRepository)
         {
             this.personRepository = personRepository;
-            //IKernel ninjectKernel = new StandardKernel();
-            //ninjectKernel.Bind<IPersonRepository>().To<PersonRepository>();
-            //repository = ninjectKernel.Get<IPersonRepository>();
         }
 
         [HttpPut]
         public async Task<long> Save(string input)
         {
-            //Person pers = JsonSerializer.Deserialize<Person>(input);
-
             var person = CustomJsonConverter.Deserialize<Person>(input);
 
             if (await personRepository.GetPersonAsync(person.Id) is null)
@@ -41,7 +30,6 @@ namespace DevTrust_Test_Task.Controllers
 
             return person.Id;
         }
-
 
         //GET /persons
         [HttpGet]

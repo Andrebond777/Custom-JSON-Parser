@@ -1,11 +1,8 @@
-﻿using DevTrust_Test_Task.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace DevTrust_Test_Task.Converters
 {
@@ -16,6 +13,8 @@ namespace DevTrust_Test_Task.Converters
             var propertyType = property.PropertyType;
             return propertyType.IsPrimitive || propertyType.IsValueType || (propertyType == typeof(string));
         }
+
+        #region Serializer
 
         private static string ConvertPropertyToString<T>(PropertyInfo property, T obj)
         {
@@ -60,6 +59,10 @@ namespace DevTrust_Test_Task.Converters
 
             return result + "\n}";
         }
+
+        #endregion
+
+        #region Deserializer
 
         public static void ConvertDictionaryToObject<T>(Dictionary<string, object> dictionary, T obj)
         {
@@ -202,5 +205,7 @@ namespace DevTrust_Test_Task.Converters
         {
             return Regex.Unescape(regex.Replace(str, match => char.ConvertFromUtf32(Int32.Parse(match.Groups[1].Value, System.Globalization.NumberStyles.HexNumber))));
         }
+
+        #endregion
     }
 }
